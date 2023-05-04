@@ -7,6 +7,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Select from '@mui/joy/Select';
+import Option from '@mui/joy/Option';
+import SelectIndicator from './SelectIndicator';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
@@ -53,6 +56,7 @@ export default function UserTable() {
 						<StyledTableCell>Epoch</StyledTableCell>
 						<StyledTableCell>Geoid</StyledTableCell>
 						<StyledTableCell>Acq</StyledTableCell>
+						<StyledTableCell>Type</StyledTableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
@@ -66,7 +70,17 @@ export default function UserTable() {
 							<StyledTableCell>{row.calories}</StyledTableCell>
 							<StyledTableCell>{row.fat}</StyledTableCell>
 							<StyledTableCell>{row.carbs}</StyledTableCell>
-							<StyledTableCell>{row.protein}</StyledTableCell>
+							<StyledTableCell>
+								<Select defaultValue='dog'>
+									<Option value='dog'>Dog</Option>
+									<Option value='cat'>Cat</Option>
+									<Option value='fish'>Fish</Option>
+									<Option value='bird'>Bird</Option>
+								</Select>
+							</StyledTableCell>
+							<StyledTableCell>
+								<SelectIndicator />
+							</StyledTableCell>
 						</StyledTableRow>
 					))}
 				</TableBody>
