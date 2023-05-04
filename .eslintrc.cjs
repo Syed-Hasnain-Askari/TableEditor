@@ -1,25 +1,36 @@
 module.exports = {
 	env: {
-		browser: true,
-		es2021: true,
+	  browser: true,
+	  commonjs: true,
+	  es2021: true,
 	},
-	extends: [
-		'eslint:recommended',
-		'plugin:react/recommended',
-	],
+	"extends": [
+		"react-app",
+		"plugin:prettier/recommended"
+	  ],
+	"parser": "babel-eslint",
 	overrides: [],
-	parserOptions: {
-		ecmaVersion: 'latest',
-		sourceType: 'module',
-	},
-	plugins: ['react'],
+	"parserOptions": {
+		"jsx": "react",
+		"ecmaFeatures": {
+		  "jsx": true,
+		  "modules": true
+		},
+		"ecmaVersion": 2018,
+		"sourceType": "module"
+	  },
+	plugins: ['import', 'prettier'],
 	rules: {
-		'react/jsx-filename-extension':
-			'off',
-		'prettier/prettier': 'error',
-		'no-console': 'warn',
-		'no-eval': 'error',
-		'import/first': 'error',
-		'no-unused-vars': 'warn',
+	  indent: ['error', 2],
+	  quotes: ['error', 'single'],
+	  semi: ['error', 'always'],
+	  'comma-dangle': ['error', 'never'],
+	  'max-len': [
+		'error',
+		{
+		  code: 90,
+		},
+	  ],
 	},
-};
+  };
+  
