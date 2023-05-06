@@ -3,11 +3,12 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import { Link } from 'react-router-dom';
 
 function Copyright(props) {
 	return (
@@ -17,11 +18,7 @@ function Copyright(props) {
 			align='center'
 			{...props}>
 			{'Copyright © '}
-			<Link
-				color='inherit'
-				href='https://mui.com/'>
-				Your Website
-			</Link>{' '}
+
 			{new Date().getFullYear()}
 			{'.'}
 		</Typography>
@@ -64,6 +61,7 @@ export default function SignIn() {
 					sx={{ mt: 1 }}>
 					<TextField
 						margin='normal'
+						color='success'
 						required
 						fullWidth
 						id='email'
@@ -73,6 +71,8 @@ export default function SignIn() {
 						autoFocus
 					/>
 					<TextField
+						focused
+						color='success'
 						margin='normal'
 						required
 						fullWidth
@@ -82,14 +82,27 @@ export default function SignIn() {
 						id='password'
 						autoComplete='current-password'
 					/>
-
 					<Button
 						type='submit'
 						fullWidth
 						variant='contained'
-						sx={{ mt: 3, mb: 2 }}>
+						sx={{ mt: 3, mb: 2, backgroundColor: '#007500' }}>
 						Sign In
 					</Button>
+					<Grid container>
+						<Grid
+							item
+							xs>
+							<Link
+								href='#'
+								variant='body2'>
+								Forgot password?
+							</Link>
+						</Grid>
+						<Grid item>
+							<Link to='/signup'>Don't have an account? Sign Up</Link>
+						</Grid>
+					</Grid>
 				</Box>
 			</Box>
 			<Copyright sx={{ mt: 8, mb: 4 }} />
