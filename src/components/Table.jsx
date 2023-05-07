@@ -17,6 +17,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import BasicModal from '../components/Modal';
 import DoneIcon from '@mui/icons-material/Done';
+import Box from '@mui/material/Box';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
 		backgroundColor: theme.palette.common.black,
@@ -36,33 +37,37 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 		border: 0,
 	},
 }));
-
-function createData(name, calories, fat, carbs, protein, size) {
-	return { name, calories, fat, carbs, protein, size };
-}
-
-const rows = [
-	createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 1.2),
-	createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 1.9),
-	createData('Eclair', 262, 16.0, 24, 6.0, 1.2),
-	createData('Cupcake', 305, 3.7, 67, 4.3, 3.4),
-	createData('Gingerbread', 356, 16.0, 49, 3.9, 2.4),
-];
 export default function UserTable(props) {
 	const [edit, setEdit] = useState(-1);
+	const [name, setName] = useState('');
+	const [epsg, setEpsg] = useState('');
+	const [epoch, setEpoch] = useState('');
+	const [geoid, setGeoId] = useState('');
+	const [size, setSize] = useState('');
+	const [acq, setAcq] = useState('');
 	const [data, setData] = useState(props?.data?.Items);
-	console.log(data, 'this is my data');
-	const onEdit = (index) => {
+
+	const onEdit = (index, id) => {
 		setEdit(index);
 	};
-
-	const onSave = () => {
+	const updatedItem = {
+		Name: name,
+		EPSG: epsg,
+		Epoch: epoch,
+		Geoid: geoid,
+		Size: size,
+	};
+	const onSave = (id) => {
 		setEdit(-1);
+		props.updateData(id, updatedItem);
 	};
 	const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => {
 		setOpen(false);
+	};
+	const handleAcq = (event, newValue) => {
+		setAcq(newValue);
 	};
 	return (
 		<>
@@ -99,19 +104,40 @@ export default function UserTable(props) {
 										{edit === index ? (
 											<>
 												<StyledTableCell>
-													<Input defaultValue={row.Name} />
+													<Input
+														defaultValue={row.Name}
+														id='name'
+														name='name'
+														onChange={(e) => setName(e.target.value)}
+													/>
 												</StyledTableCell>
 												<StyledTableCell>
-													<Input defaultValue={row.EPSG} />
+													<Input
+														defaultValue={row.EPSG}
+														id='epsg'
+														name='epsg'
+														onChange={(e) => setEpsg(e.target.value)}
+													/>
 												</StyledTableCell>
 												<StyledTableCell>
-													<Input defaultValue={row.Epoch} />
+													<Input
+														defaultValue={row.Epoch}
+														id='epoch'
+														name='epoch'
+														onChange={(e) => setEpoch(e.target.value)}
+													/>
 												</StyledTableCell>
 												<StyledTableCell>
-													<Input defaultValue={row.Geoid} />
+													<Input
+														defaultValue={row.Geoid}
+														id='geoid'
+														name='geoid'
+														onChange={(e) => setGeoId(e.target.value)}
+													/>
 												</StyledTableCell>
 												<StyledTableCell>
 													<Select
+														onChange={handleAcq}
 														placeholder='Select'
 														disabled={false}>
 														{row.Acq.map((value, index) => {
@@ -126,7 +152,12 @@ export default function UserTable(props) {
 													/>
 												</StyledTableCell>
 												<StyledTableCell>
-													<Input defaultValue={row.Size} />
+													<Input
+														defaultValue={row.Size}
+														id='size'
+														name='size'
+														onChange={(e) => setSize(e.target.value)}
+													/>
 												</StyledTableCell>
 											</>
 										) : (
@@ -156,7 +187,7 @@ export default function UserTable(props) {
 										<StyledTableCell>
 											{edit === index ? (
 												<IconButton
-													onClick={onSave}
+													onClick={() => onSave(row.Id)}
 													edge='end'
 													aria-label='save'>
 													<SaveIcon />
