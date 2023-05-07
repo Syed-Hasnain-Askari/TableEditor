@@ -1,15 +1,18 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import { Link } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link, useNavigate } from 'react-router-dom';
+import { Amplify, Auth } from 'aws-amplify';
+import { notification } from 'antd';
+import awsconfig from './aws-exports';
+Amplify.configure(awsconfig);
 
 function Copyright(props) {
 	return (
@@ -19,31 +22,49 @@ function Copyright(props) {
 			align='center'
 			{...props}>
 			{'Copyright © '}
-			<Link
-				color='inherit'
-				href='https://mui.com/'>
-				Your Website
-			</Link>{' '}
 			{new Date().getFullYear()}
 			{'.'}
 		</Typography>
 	);
 }
-
-const theme = createTheme();
-
 export default function SignUp() {
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-		console.log({
-			email: data.get('email'),
-			password: data.get('password'),
-		});
+	const [loading, setLoading] = useState(false);
+	const [redirect, setRedicrect] = useState(false);
+	const [email, setEmail] = useState('');
+	const navigate = useNavigate();
+	const handleSubmit = async (event) => {
+		try {
+			event.preventDefault();
+			const data = new FormData(event.currentTarget);
+			const email = data.get('email');
+			const password = data.get('password');
+			setLoading(true);
+			await Auth.signUp({
+				username: email,
+				password: password,
+				validationData: [],
+			}).then(() => {
+				notification.success({
+					message: 'Succesfully signed up user!',
+					description: 'Account created successfully, Redirecting you in a few!',
+					placement: 'topRight',
+					duration: 2,
+				});
+				setLoading(false);
+				navigate('/confirmemail', { state: { email: email } });
+			});
+		} catch (error) {
+			notification.error({
+				message: 'Something went wrong!',
+				description: 'Error signing up user',
+				placement: 'topRight',
+				duration: 2,
+			});
+			setLoading(false);
+		}
 	};
-
 	return (
-		<ThemeProvider theme={theme}>
+		<>
 			<Container
 				component='main'
 				maxWidth='xs'>
@@ -77,6 +98,7 @@ export default function SignUp() {
 								<TextField
 									required
 									fullWidth
+									color='success'
 									id='email'
 									label='Email Address'
 									name='email'
@@ -89,6 +111,7 @@ export default function SignUp() {
 								<TextField
 									required
 									fullWidth
+									color='success'
 									name='password'
 									label='Password'
 									type='password'
@@ -101,7 +124,7 @@ export default function SignUp() {
 							type='submit'
 							fullWidth
 							variant='contained'
-							sx={{ mt: 3, mb: 2 }}>
+							sx={{ mt: 3, mb: 2, backgroundColor: '#007500' }}>
 							Sign Up
 						</Button>
 						<Grid
@@ -111,10 +134,13 @@ export default function SignUp() {
 								<Link to='/login'>Already have an account? Sign in</Link>
 							</Grid>
 						</Grid>
+						{/* <Grid container>
+							<Typography>{error}</Typography>
+						</Grid> */}
 					</Box>
 				</Box>
 				<Copyright sx={{ mt: 5 }} />
 			</Container>
-		</ThemeProvider>
+		</>
 	);
 }

@@ -7,12 +7,11 @@ export default function SelectIndicator(props) {
 	return (
 		<Select
 			disabled={props.disabled}
-			placeholder='Select a pet…'
+			placeholder='Select'
 			indicator={<KeyboardArrowDown />}>
-			<Option value='dog'>Dog</Option>
-			<Option value='cat'>Cat</Option>
-			<Option value='fish'>Fish</Option>
-			<Option value='bird'>Bird</Option>
+			{props.type.map((val, index) => {
+				return <Option value={val}>{val}</Option>;
+			})}
 		</Select>
 	);
 }

@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import SignIn from '../Login';
 import SignUp from '../SignUp';
+import ConfirmEmail from '../ConfirmEmail';
 import DashBoard from '../DashBoard';
 const Router = () => {
 	return (
@@ -19,6 +20,10 @@ const Router = () => {
 					<Route
 						path='/signup'
 						element={<SignUp />}
+					/>
+					<Route
+						path='/confirmemail'
+						element={<ConfirmEmail />}
 					/>
 				</Routes>
 			</Suspense>

@@ -8,9 +8,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { handleConfirmationEmail } from '../src/config/UserPool';
 import { notification } from 'antd';
-import { handleLogin } from '../src/config/UserPool';
 function Copyright(props) {
 	return (
 		<Typography
@@ -25,33 +25,52 @@ function Copyright(props) {
 		</Typography>
 	);
 }
-export default function SignIn() {
+export default function ConfirmEmail() {
+	const [loading, setLoading] = useState(false);
+	const [redirect, setRedicrect] = useState(false);
+
+	const location = useLocation();
+
 	const navigate = useNavigate();
 	const handleSubmit = async (event) => {
 		try {
 			event.preventDefault();
 			const data = new FormData(event.currentTarget);
-			const email = data.get('email');
-			const password = data.get('password');
-			const signInResponse = handleLogin(email, password); // temporary password
-			if (signInResponse) {
-				notification.success({
-					message: 'Succesfully signed up user!',
-					description: 'Account created successfully, Redirecting you in a few!',
-					placement: 'topRight',
-					duration: 2,
-				});
-				setTimeout(() => {
-					navigate('/');
-				}, 2000);
-			}
+			const code = data.get('code');
+			console.log(code, 'this is code');
+			setLoading(true);
+			handleConfirmationEmail(location.state.email, code).then(() => {
+				notification
+					.success({
+						message: 'Succesfully confirmed!',
+						description: 'Account created successfully, Redirecting you in a few!',
+						placement: 'topRight',
+						duration: 2,
+						onClose: () => {
+							setRedicrect(true);
+						},
+					})
+					.catch((err) => {
+						notification.error({
+							message: 'Error',
+							description: 'Account created successfully, Redirecting you in a few!',
+							placement: 'topRight',
+							duration: 2,
+							onClose: () => {
+								setRedicrect(true);
+							},
+						});
+					});
+			});
+			setLoading(false);
 		} catch (error) {
 			notification.error({
-				message: 'Something went wrong!',
-				description: `${error}`,
+				message: 'Invalid code!',
+				description: 'Confirmation has been failed',
 				placement: 'topRight',
-				duration: 4,
+				duration: 2,
 			});
+			setLoading(false);
 		}
 	};
 	return (
@@ -72,7 +91,7 @@ export default function SignIn() {
 				<Typography
 					component='h1'
 					variant='h5'>
-					Sign in
+					Confirm your email address
 				</Typography>
 				<Box
 					component='form'
@@ -84,41 +103,19 @@ export default function SignIn() {
 						color='success'
 						required
 						fullWidth
-						id='email'
-						label='Email Address'
-						name='email'
-						autoComplete='email'
+						id='code'
+						label='Please enter code'
+						name='code'
 						autoFocus
-					/>
-					<TextField
-						focused
-						color='success'
-						margin='normal'
-						required
-						fullWidth
-						name='password'
-						label='Password'
-						type='password'
-						id='password'
-						autoComplete='current-password'
 					/>
 					<Button
 						type='submit'
 						fullWidth
 						variant='contained'
 						sx={{ mt: 3, mb: 2, backgroundColor: '#007500' }}>
-						Sign In
+						Cionfirm
 					</Button>
 					<Grid container>
-						<Grid
-							item
-							xs>
-							<Link
-								href='#'
-								variant='body2'>
-								Forgot password?
-							</Link>
-						</Grid>
 						<Grid item>
 							<Link to='/signup'>Don't have an account? Sign Up</Link>
 						</Grid>
@@ -126,6 +123,7 @@ export default function SignIn() {
 				</Box>
 			</Box>
 			<Copyright sx={{ mt: 8, mb: 4 }} />
+			{redirect && navigate('/login')}
 		</Container>
 	);
 }

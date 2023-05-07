@@ -17,7 +17,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import BasicModal from '../components/Modal';
 import DoneIcon from '@mui/icons-material/Done';
-
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
 		backgroundColor: theme.palette.common.black,
@@ -49,9 +48,10 @@ const rows = [
 	createData('Cupcake', 305, 3.7, 67, 4.3, 3.4),
 	createData('Gingerbread', 356, 16.0, 49, 3.9, 2.4),
 ];
-export default function UserTable() {
+export default function UserTable(props) {
 	const [edit, setEdit] = useState(-1);
-
+	const [data, setData] = useState(props?.data?.Items);
+	console.log(data, 'this is my data');
 	const onEdit = (index) => {
 		setEdit(index);
 	};
@@ -92,98 +92,103 @@ export default function UserTable() {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{rows.map((row, index) => {
-							return (
-								<StyledTableRow key={index}>
-									{edit === index ? (
-										<>
-											<StyledTableCell>
-												<Input defaultValue={row.name} />
-											</StyledTableCell>
-											<StyledTableCell>
-												<Input defaultValue={row.calories} />
-											</StyledTableCell>
-											<StyledTableCell>
-												<Input defaultValue={row.fat} />
-											</StyledTableCell>
-											<StyledTableCell>
-												<Input defaultValue={row.carbs} />
-											</StyledTableCell>
-											<StyledTableCell>
-												<Select
-													defaultValue='GEOID18'
-													disabled={false}>
-													<Option value='GEOID18'>"GEOID18"</Option>
-													<Option value='GEOID19'>GEOID19</Option>
-													<Option value='GEOID20'>GEOID20</Option>
-													<Option value='GEOID21'>GEOID21</Option>
-												</Select>
-											</StyledTableCell>
-											<StyledTableCell>
-												<SelectIndicator disabled={false} />
-											</StyledTableCell>
-											<StyledTableCell>
-												<Input defaultValue={row.size} />
-											</StyledTableCell>
-										</>
-									) : (
-										<>
-											<StyledTableCell>{row.name}</StyledTableCell>
-											<StyledTableCell>{row.calories}</StyledTableCell>
-											<StyledTableCell>{row.fat}</StyledTableCell>
-											<StyledTableCell>{row.carbs}</StyledTableCell>
-											<StyledTableCell>
-												<Select
-													defaultValue='GEOID18'
-													disabled={true}>
-													<Option value='GEOID18'>"GEOID18"</Option>
-													<Option value='GEOID19'>GEOID19</Option>
-													<Option value='GEOID20'>GEOID20</Option>
-													<Option value='GEOID21'>GEOID21</Option>
-												</Select>
-											</StyledTableCell>
-											<StyledTableCell>
-												<SelectIndicator disabled={true} />
-											</StyledTableCell>
-											<StyledTableCell>{row.size}</StyledTableCell>
-										</>
-									)}
-									<StyledTableCell>
+						{data != null &&
+							data.map((row, index) => {
+								return (
+									<StyledTableRow key={index}>
 										{edit === index ? (
-											<IconButton
-												onClick={onSave}
-												edge='end'
-												aria-label='save'>
-												<SaveIcon />
-											</IconButton>
+											<>
+												<StyledTableCell>
+													<Input defaultValue={row.Name} />
+												</StyledTableCell>
+												<StyledTableCell>
+													<Input defaultValue={row.EPSG} />
+												</StyledTableCell>
+												<StyledTableCell>
+													<Input defaultValue={row.Epoch} />
+												</StyledTableCell>
+												<StyledTableCell>
+													<Input defaultValue={row.Geoid} />
+												</StyledTableCell>
+												<StyledTableCell>
+													<Select
+														placeholder='Select'
+														disabled={false}>
+														{row.Acq.map((value, index) => {
+															return <Option value={value}>{value}</Option>;
+														})}
+													</Select>
+												</StyledTableCell>
+												<StyledTableCell>
+													<SelectIndicator
+														disabled={false}
+														type={row.Type}
+													/>
+												</StyledTableCell>
+												<StyledTableCell>
+													<Input defaultValue={row.Size} />
+												</StyledTableCell>
+											</>
 										) : (
-											<IconButton
-												onClick={() => onEdit(index)}
-												edge='end'
-												aria-label='edit'>
-												<EditIcon />
-											</IconButton>
+											<>
+												<StyledTableCell>{row.Name}</StyledTableCell>
+												<StyledTableCell>{row.EPSG}</StyledTableCell>
+												<StyledTableCell>{row.Epoch}</StyledTableCell>
+												<StyledTableCell>{row.Geoid}</StyledTableCell>
+												<StyledTableCell>
+													<Select
+														placeholder='Select a pet…'
+														disabled={true}>
+														{row.Acq.map((value, index) => {
+															<Option value={value}>{value}</Option>;
+														})}
+													</Select>
+												</StyledTableCell>
+												<StyledTableCell>
+													<SelectIndicator
+														disabled={true}
+														type={row.Type}
+													/>
+												</StyledTableCell>
+												<StyledTableCell>{row.Size}</StyledTableCell>
+											</>
 										)}
-									</StyledTableCell>
-									<StyledTableCell>
-										<IconButton
-											onClick={handleOpen}
-											edge='end'
-											aria-label='delete'>
-											<DeleteIcon />
-										</IconButton>
-									</StyledTableCell>
-									<StyledTableCell>
-										<IconButton
-											onClick={handleOpen}
-											edge='end'
-											aria-label='action'>
-											<DoneIcon />
-										</IconButton>
-									</StyledTableCell>
-								</StyledTableRow>
-							);
-						})}
+										<StyledTableCell>
+											{edit === index ? (
+												<IconButton
+													onClick={onSave}
+													edge='end'
+													aria-label='save'>
+													<SaveIcon />
+												</IconButton>
+											) : (
+												<IconButton
+													onClick={() => onEdit(index)}
+													edge='end'
+													aria-label='edit'>
+													<EditIcon />
+												</IconButton>
+											)}
+										</StyledTableCell>
+										<StyledTableCell>
+											<IconButton
+												onClick={handleOpen}
+												edge='end'
+												aria-label='delete'>
+												<DeleteIcon />
+											</IconButton>
+										</StyledTableCell>
+										<StyledTableCell>
+											<IconButton
+												onClick={handleOpen}
+												edge='end'
+												aria-label='action'>
+												<DoneIcon />
+											</IconButton>
+										</StyledTableCell>
+									</StyledTableRow>
+								);
+							})}
 					</TableBody>
 				</Table>
 			</TableContainer>

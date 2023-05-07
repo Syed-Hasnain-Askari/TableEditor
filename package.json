@@ -10,17 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@aws-amplify/cli": "^11.1.1",
     "@emotion/react": "^11.10.8",
     "@emotion/styled": "^11.10.8",
     "@fontsource/roboto": "^4.5.8",
     "@mui/icons-material": "^5.11.16",
     "@mui/joy": "^5.0.0-alpha.78",
     "@mui/material": "^5.12.3",
+    "antd": "^5.4.7",
+    "aws-amplify": "^5.2.0",
+    "aws-sdk": "^2.1373.0",
     "match-sorter": "^6.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.11.1",
-    "sort-by": "^1.2.0"
+    "react-router-dom": "^6.11.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
