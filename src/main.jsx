@@ -5,7 +5,6 @@ import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 // STARTS HERE
 import * as AWS from 'aws-sdk';
-console.log(import.meta.env.VITE_SECRETACCESSKEY);
 AWS.config.update({
 	region: 'eu-north-1',
 	secretAccessKey: import.meta.env.VITE_SECRETACCESSKEY,
