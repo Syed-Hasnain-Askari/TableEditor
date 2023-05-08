@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import UserTable from './components/Table';
 import * as AWS from 'aws-sdk';
+import { useAuth } from './hooks/useAuth';
 export default function DashBoard() {
 	const docClient = new AWS.DynamoDB.DocumentClient();
 	const [data, setData] = useState({
@@ -27,7 +28,6 @@ export default function DashBoard() {
 	};
 	const updateData = async (id, updatedItem) => {
 		const result = data?.userData?.Items.find((item) => item.Id === id);
-
 		if (!result) {
 			console.error(`Unable to find item with id ${id}`);
 			return;
@@ -81,6 +81,13 @@ export default function DashBoard() {
 
 	useEffect(() => {
 		onRead();
+	}, []);
+	const [userState, setUserState] = useState(null);
+	useEffect(() => {
+		const storedUser = window.localStorage.getItem('user');
+		if (storedUser) {
+			setUserState(JSON.parse(storedUser));
+		}
 	}, []);
 	return (
 		<div>

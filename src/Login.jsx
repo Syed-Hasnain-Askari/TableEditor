@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,6 +11,7 @@ import Grid from '@mui/material/Grid';
 import { Link, useNavigate } from 'react-router-dom';
 import { notification } from 'antd';
 import { handleLogin } from '../src/config/UserPool';
+import { useAuth } from '../src/hooks/useAuth';
 function Copyright(props) {
 	return (
 		<Typography
@@ -26,32 +27,41 @@ function Copyright(props) {
 	);
 }
 export default function SignIn() {
+	const [response, setResponse] = useState('');
 	const navigate = useNavigate();
 	const handleSubmit = async (event) => {
-		try {
-			event.preventDefault();
-			const data = new FormData(event.currentTarget);
-			const email = data.get('email');
-			const password = data.get('password');
-			const signInResponse = handleLogin(email, password); // temporary password
-			if (signInResponse) {
-				notification.success({
-					message: 'Succesfully signed up user!',
-					description: 'Account created successfully, Redirecting you in a few!',
-					placement: 'topRight',
-					duration: 2,
-				});
-				setTimeout(() => {
-					navigate('/');
-				}, 2000);
-			}
-		} catch (error) {
-			notification.error({
-				message: 'Something went wrong!',
-				description: `${error}`,
+		event.preventDefault();
+		const data = new FormData(event.currentTarget);
+		const email = data.get('email');
+		const password = data.get('password');
+		if (!email || !password) {
+			return notification.error({
+				message: 'Error',
+				description: 'Fields can not be empty!',
 				placement: 'topRight',
-				duration: 4,
+				duration: 2,
 			});
+		} else {
+			try {
+				const signInResponse = await handleLogin(email, password); // temporary password
+				if (signInResponse) {
+					window.localStorage.setItem('user', JSON.stringify(signInResponse));
+					notification.success({
+						message: 'Succesfully signed up user!',
+						description: 'Account created successfully, Redirecting you in a few!',
+						placement: 'topRight',
+						duration: 2,
+					});
+					navigate('/dashboard');
+				}
+			} catch (error) {
+				notification.error({
+					message: 'Something went wrong!',
+					description: `${error}`,
+					placement: 'topRight',
+					duration: 4,
+				});
+			}
 		}
 	};
 	return (

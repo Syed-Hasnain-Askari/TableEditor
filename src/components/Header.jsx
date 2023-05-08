@@ -6,7 +6,8 @@ import { handleSignOut } from '../config/UserPool';
 export default function Header(props) {
 	const navigate = useNavigate();
 	const handleLogout = async () => {
-		handleSignOut();
+		const logout = await handleSignOut();
+		window.localStorage.removeItem('user');
 		navigate('/login');
 	};
 	return (

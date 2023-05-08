@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App.jsx';
 import './index.css';
-import { BrowserRouter } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './App.jsx';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 // STARTS HERE
 import * as AWS from 'aws-sdk';
 AWS.config.update({
@@ -10,10 +11,14 @@ AWS.config.update({
 	secretAccessKey: import.meta.env.VITE_SECRETACCESSKEY,
 	accessKeyId: import.meta.env.VITE_ACCESSKEYID,
 });
+const theme = createTheme({
+	palette: {
+		primary: { main: '#3a34d2' },
+	},
+});
+
 ReactDOM.createRoot(document.getElementById('root')).render(
 	<React.StrictMode>
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
+		<RouterProvider router={router} />
 	</React.StrictMode>
 );

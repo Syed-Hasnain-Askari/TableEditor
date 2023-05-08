@@ -18,6 +18,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import BasicModal from '../components/Modal';
+import ComingSoonModal from '../components/ComingSoonModal';
 import DoneIcon from '@mui/icons-material/Done';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -70,7 +71,12 @@ export default function UserTable(props) {
 		setEdit(-1);
 	};
 	const [open, setOpen] = useState(false);
+	const [comingSoon, setComingSoon] = useState(false);
 	const handleOpen = () => setOpen(true);
+	const handleComingSoon = () => setComingSoon(true);
+	const handleCloseComingSoon = () => {
+		setComingSoon(false);
+	};
 	const handleClose = () => {
 		setOpen(false);
 	};
@@ -89,6 +95,10 @@ export default function UserTable(props) {
 			<BasicModal
 				open={open}
 				handleClose={handleClose}
+			/>
+			<ComingSoonModal
+				open={comingSoon}
+				handleCloseComingSoon={() => handleCloseComingSoon()}
 			/>
 			<TableContainer
 				component={Paper}
@@ -146,7 +156,7 @@ export default function UserTable(props) {
 												<StyledTableCell>
 													<Select
 														onChange={handleGeoId}
-														placeholder='Select'
+														placeholder={row.Geoid ? row.Geoid : 'Select'}
 														disabled={false}>
 														{row.Geoids.map((value, index) => {
 															return <Option value={value}>{value}</Option>;
@@ -155,11 +165,14 @@ export default function UserTable(props) {
 												</StyledTableCell>
 												<StyledTableCell>{row.Acq}</StyledTableCell>
 												<StyledTableCell>
-													<SelectIndicator
+													<Select
 														onChange={handleType}
-														disabled={false}
-														type={row.Types}
-													/>
+														placeholder={row.Type ? row.Type : 'Select'}
+														disabled={false}>
+														{row.Types.map((value, index) => {
+															return <Option value={value}>{value}</Option>;
+														})}
+													</Select>
 												</StyledTableCell>
 												<StyledTableCell>
 													<Input
@@ -208,6 +221,7 @@ export default function UserTable(props) {
 										</StyledTableCell>
 										<StyledTableCell>
 											<IconButton
+												onClick={handleComingSoon}
 												edge='end'
 												aria-label='download'>
 												<DownloadForOfflineIcon />

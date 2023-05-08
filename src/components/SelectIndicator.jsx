@@ -7,7 +7,7 @@ export default function SelectIndicator(props) {
 	return (
 		<Select
 			disabled={props.disabled}
-			placeholder='Select'
+			placeholder={props.Type}
 			onChange={props.onChange}
 			indicator={<KeyboardArrowDown />}>
 			{props.type.map((val, index) => {

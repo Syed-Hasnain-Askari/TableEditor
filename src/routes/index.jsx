@@ -1,33 +1,41 @@
-import { Suspense } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React, { Suspense, useState, useEffect } from 'react';
+import { Route, Routes, useRoutes } from 'react-router-dom';
 import SignIn from '../Login';
 import SignUp from '../SignUp';
+import Error from '../Error';
 import ConfirmEmail from '../ConfirmEmail';
 import DashBoard from '../DashBoard';
+import { ProtectedRoute } from '../routes/ProtectedRoute ';
 const Router = () => {
 	return (
-		<>
-			<Suspense fallback={() => <div> Loading... </div>}>
-				<Routes>
-					<Route
-						path='/'
-						element={<DashBoard />}
-					/>
-					<Route
-						path='/login'
-						element={<SignIn />}
-					/>
-					<Route
-						path='/signup'
-						element={<SignUp />}
-					/>
-					<Route
-						path='/confirmemail'
-						element={<ConfirmEmail />}
-					/>
-				</Routes>
-			</Suspense>
-		</>
+		<React.Fragment>
+			<Routes>
+				<Route
+					path='/dashboard'
+					element={
+						<ProtectedRoute>
+							<DashBoard />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path='/login'
+					element={<SignIn />}
+				/>
+				<Route
+					path='/signup'
+					element={<SignUp />}
+				/>
+				<Route
+					path='/confirmemail'
+					element={<ConfirmEmail />}
+				/>
+				<Route
+					path='*'
+					element={<Error />}
+				/>
+			</Routes>
+		</React.Fragment>
 	);
 };
 export default Router;

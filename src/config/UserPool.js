@@ -11,7 +11,7 @@ export const handleSignOut = async () => {
 };
 export const handleLogin = async (email, password) => {
 	try {
-		const res = await await Auth.signIn(email, password);
+		const res = await Auth.signIn(email, password);
 		return res;
 	} catch (error) {
 		console.log(error);
@@ -20,7 +20,7 @@ export const handleLogin = async (email, password) => {
 export const handleSignUp = async (email, password) => {
 	try {
 		const res = await Auth.signUp(email, password);
-		return res;
+		return res.user;
 	} catch (error) {
 		console.log(error);
 	}
