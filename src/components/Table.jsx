@@ -117,7 +117,7 @@ export default function UserTable(props) {
 							<StyledTableCell>Acq</StyledTableCell>
 							<StyledTableCell>Type</StyledTableCell>
 							<StyledTableCell>Size</StyledTableCell>
-							<StyledTableCell></StyledTableCell>
+							{/* <StyledTableCell></StyledTableCell> */}
 							<StyledTableCell></StyledTableCell>
 							<StyledTableCell></StyledTableCell>
 							<StyledTableCell></StyledTableCell>
