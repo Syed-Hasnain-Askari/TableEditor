@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import Checkbox from '@mui/material/Checkbox';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -10,6 +11,7 @@ import Paper from '@mui/material/Paper';
 import Input from '@mui/material/Input';
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
+import CancelIcon from '@mui/icons-material/Cancel';
 import SelectIndicator from './SelectIndicator';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
@@ -17,7 +19,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import BasicModal from '../components/Modal';
 import DoneIcon from '@mui/icons-material/Done';
-import Box from '@mui/material/Box';
+import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
 		backgroundColor: theme.palette.common.black,
@@ -45,6 +47,7 @@ export default function UserTable(props) {
 	const [geoid, setGeoId] = useState('');
 	const [size, setSize] = useState('');
 	const [acq, setAcq] = useState('');
+	const [type, setType] = useState('');
 	const [data, setData] = useState(props?.data?.Items);
 
 	const onEdit = (index, id) => {
@@ -55,20 +58,32 @@ export default function UserTable(props) {
 		EPSG: epsg,
 		Epoch: epoch,
 		Geoid: geoid,
+		Acq: acq,
+		Type: type,
 		Size: size,
 	};
 	const onSave = (id) => {
 		setEdit(-1);
 		props.updateData(id, updatedItem);
 	};
+	const onCancel = () => {
+		setEdit(-1);
+	};
 	const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => {
 		setOpen(false);
 	};
-	const handleAcq = (event, newValue) => {
-		setAcq(newValue);
+	const handleGeoId = (event, newValue) => {
+		setGeoId(newValue);
 	};
+	const handleType = (event, newValue) => {
+		setType(newValue);
+		console.log(type);
+	};
+	React.useEffect(() => {
+		console.log(type);
+	}, [type]);
 	return (
 		<>
 			<BasicModal
@@ -84,6 +99,17 @@ export default function UserTable(props) {
 					hoverRow>
 					<TableHead>
 						<TableRow>
+							<TableCell padding='checkbox'>
+								<Checkbox
+									color='primary'
+									// indeterminate={numSelected > 0 && numSelected < rowCount}
+									// checked={rowCount > 0 && numSelected === rowCount}
+									// onChange={onSelectAllClick}
+									inputProps={{
+										'aria-label': 'select all desserts',
+									}}
+								/>
+							</TableCell>
 							<StyledTableCell>Name</StyledTableCell>
 							<StyledTableCell>EPSG</StyledTableCell>
 							<StyledTableCell>Epoch</StyledTableCell>
@@ -94,6 +120,7 @@ export default function UserTable(props) {
 							<StyledTableCell></StyledTableCell>
 							<StyledTableCell></StyledTableCell>
 							<StyledTableCell></StyledTableCell>
+							<StyledTableCell></StyledTableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -101,6 +128,15 @@ export default function UserTable(props) {
 							data.map((row, index) => {
 								return (
 									<StyledTableRow key={index}>
+										<TableCell padding='checkbox'>
+											<Checkbox
+												color='primary'
+												// checked={isItemSelected}
+												// inputProps={{
+												// 	'aria-labelledby': labelId,
+												// }}
+											/>
+										</TableCell>
 										{edit === index ? (
 											<>
 												<StyledTableCell>
@@ -128,27 +164,21 @@ export default function UserTable(props) {
 													/>
 												</StyledTableCell>
 												<StyledTableCell>
-													<Input
-														defaultValue={row.Geoid}
-														id='geoid'
-														name='geoid'
-														onChange={(e) => setGeoId(e.target.value)}
-													/>
-												</StyledTableCell>
-												<StyledTableCell>
 													<Select
-														onChange={handleAcq}
+														onChange={handleGeoId}
 														placeholder='Select'
 														disabled={false}>
-														{row.Acq.map((value, index) => {
+														{row.Geoids.map((value, index) => {
 															return <Option value={value}>{value}</Option>;
 														})}
 													</Select>
 												</StyledTableCell>
+												<StyledTableCell>{row.Acq}</StyledTableCell>
 												<StyledTableCell>
 													<SelectIndicator
+														onChange={handleType}
 														disabled={false}
-														type={row.Type}
+														type={row.Types}
 													/>
 												</StyledTableCell>
 												<StyledTableCell>
@@ -166,21 +196,8 @@ export default function UserTable(props) {
 												<StyledTableCell>{row.EPSG}</StyledTableCell>
 												<StyledTableCell>{row.Epoch}</StyledTableCell>
 												<StyledTableCell>{row.Geoid}</StyledTableCell>
-												<StyledTableCell>
-													<Select
-														placeholder='Select a pet…'
-														disabled={true}>
-														{row.Acq.map((value, index) => {
-															<Option value={value}>{value}</Option>;
-														})}
-													</Select>
-												</StyledTableCell>
-												<StyledTableCell>
-													<SelectIndicator
-														disabled={true}
-														type={row.Type}
-													/>
-												</StyledTableCell>
+												<StyledTableCell>{row.Acq}</StyledTableCell>
+												<StyledTableCell>{row.Type}</StyledTableCell>
 												<StyledTableCell>{row.Size}</StyledTableCell>
 											</>
 										)}
@@ -201,21 +218,37 @@ export default function UserTable(props) {
 												</IconButton>
 											)}
 										</StyledTableCell>
-										<StyledTableCell>
+										{/* <StyledTableCell>
 											<IconButton
 												onClick={handleOpen}
 												edge='end'
 												aria-label='delete'>
 												<DeleteIcon />
 											</IconButton>
-										</StyledTableCell>
+										</StyledTableCell> */}
 										<StyledTableCell>
 											<IconButton
-												onClick={handleOpen}
 												edge='end'
-												aria-label='action'>
-												<DoneIcon />
+												aria-label='download'>
+												<DownloadForOfflineIcon />
 											</IconButton>
+										</StyledTableCell>
+										<StyledTableCell>
+											{edit === index ? (
+												<IconButton
+													onClick={() => onCancel()}
+													edge='end'
+													aria-label='action'>
+													<CancelIcon />
+												</IconButton>
+											) : (
+												<IconButton
+													onClick={handleOpen}
+													edge='end'
+													aria-label='action'>
+													<DoneIcon />
+												</IconButton>
+											)}
 										</StyledTableCell>
 									</StyledTableRow>
 								);

@@ -32,25 +32,24 @@ export default function DashBoard() {
 			console.error(`Unable to find item with id ${id}`);
 			return;
 		}
-
-		const { Name, EPSG, Epoch, Geoid, Size } = result;
-
+		const { Name, EPSG, Epoch, Geoid, Acq, Type, Size } = result;
 		if (!Name || !EPSG || !Epoch || !Geoid || !Size) {
 			console.error(`Cannot update item with id ${id} as some required fields are missing`);
 			return;
 		}
-
 		let params = {
 			TableName: 'userDetails',
 			Key: {
 				Id: id,
 			},
-			UpdateExpression: `set #Name = :Name,#EPSG = :EPSG,#Epoch = :Epoch,#Geoid = :Geoid,#Size = :Size`,
+			UpdateExpression: `set #Name = :Name,#EPSG = :EPSG,#Epoch = :Epoch,#Geoid = :Geoid,#Acq = :Acq,#Type = :Type,#Size = :Size`,
 			ExpressionAttributeNames: {
 				'#Name': 'Name',
 				'#EPSG': 'EPSG',
 				'#Epoch': 'Epoch',
 				'#Geoid': 'Geoid',
+				'#Acq': 'Acq',
+				'#Type': 'Type',
 				'#Size': 'Size',
 			},
 			ExpressionAttributeValues: {
@@ -58,6 +57,8 @@ export default function DashBoard() {
 				':EPSG': updatedItem.EPSG ? updatedItem.EPSG : EPSG,
 				':Epoch': updatedItem.Epoch ? updatedItem.Epoch : Epoch,
 				':Geoid': updatedItem.Geoid ? updatedItem.Geoid : Geoid,
+				':Acq': updatedItem.Acq ? updatedItem.Acq : Acq,
+				':Type': updatedItem.Type ? updatedItem.Type : Type,
 				':Size': updatedItem.Size ? updatedItem.Size : Size,
 			},
 			ReturnValues: 'ALL_NEW',
