@@ -5,10 +5,11 @@ import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 // STARTS HERE
 import * as AWS from 'aws-sdk';
+console.log(import.meta.env.VITE_SECRETACCESSKEY);
 AWS.config.update({
 	region: 'eu-north-1',
-	secretAccessKey: 'cnAlq+tVQsi4kFneGPp7L3OEz556Q+S7GKlgWp3w',
-	accessKeyId: 'AKIAZK5WGBFDTBZ3NAMJ',
+	secretAccessKey: import.meta.env.VITE_SECRETACCESSKEY,
+	accessKeyId: import.meta.env.VITE_ACCESSKEYID,
 });
 ReactDOM.createRoot(document.getElementById('root')).render(
 	<React.StrictMode>

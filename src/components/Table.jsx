@@ -99,17 +99,6 @@ export default function UserTable(props) {
 					hoverRow>
 					<TableHead>
 						<TableRow>
-							<TableCell padding='checkbox'>
-								<Checkbox
-									color='primary'
-									// indeterminate={numSelected > 0 && numSelected < rowCount}
-									// checked={rowCount > 0 && numSelected === rowCount}
-									// onChange={onSelectAllClick}
-									inputProps={{
-										'aria-label': 'select all desserts',
-									}}
-								/>
-							</TableCell>
 							<StyledTableCell>Name</StyledTableCell>
 							<StyledTableCell>EPSG</StyledTableCell>
 							<StyledTableCell>Epoch</StyledTableCell>
@@ -117,7 +106,7 @@ export default function UserTable(props) {
 							<StyledTableCell>Acq</StyledTableCell>
 							<StyledTableCell>Type</StyledTableCell>
 							<StyledTableCell>Size</StyledTableCell>
-							{/* <StyledTableCell></StyledTableCell> */}
+							<StyledTableCell></StyledTableCell>
 							<StyledTableCell></StyledTableCell>
 							<StyledTableCell></StyledTableCell>
 							<StyledTableCell></StyledTableCell>
@@ -128,15 +117,6 @@ export default function UserTable(props) {
 							data.map((row, index) => {
 								return (
 									<StyledTableRow key={index}>
-										<TableCell padding='checkbox'>
-											<Checkbox
-												color='primary'
-												// checked={isItemSelected}
-												// inputProps={{
-												// 	'aria-labelledby': labelId,
-												// }}
-											/>
-										</TableCell>
 										{edit === index ? (
 											<>
 												<StyledTableCell>
@@ -218,14 +198,14 @@ export default function UserTable(props) {
 												</IconButton>
 											)}
 										</StyledTableCell>
-										{/* <StyledTableCell>
+										<StyledTableCell>
 											<IconButton
 												onClick={handleOpen}
 												edge='end'
 												aria-label='delete'>
 												<DeleteIcon />
 											</IconButton>
-										</StyledTableCell> */}
+										</StyledTableCell>
 										<StyledTableCell>
 											<IconButton
 												edge='end'
