@@ -5,9 +5,16 @@ import SignUp from './SignUp';
 import Error from './Error';
 import ConfirmEmail from './ConfirmEmail';
 import DashBoard from './DashBoard';
-import { AuthProvider } from './hooks/useAuth';
-import { ProtectedRoute } from './routes/ProtectedRoute ';
-import { Route, createBrowserRouter, createRoutesFromElements, defer } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
+const ProtectedRoute = ({ children }) => {
+	let user = window.localStorage.getItem('user');
+	let result = JSON.parse(user);
+	if (!result) {
+		return <Navigate to='/login' />;
+	}
+	return children;
+};
 export const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route>

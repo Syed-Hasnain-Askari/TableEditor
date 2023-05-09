@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import UserTable from './components/Table';
 import * as AWS from 'aws-sdk';
-import { useAuth } from './hooks/useAuth';
 export default function DashBoard() {
 	const docClient = new AWS.DynamoDB.DocumentClient();
 	const [data, setData] = useState({

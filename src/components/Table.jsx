@@ -154,25 +154,21 @@ export default function UserTable(props) {
 													/>
 												</StyledTableCell>
 												<StyledTableCell>
-													<Select
+													<SelectIndicator
 														onChange={handleGeoId}
-														placeholder={row.Geoid ? row.Geoid : 'Select'}
-														disabled={false}>
-														{row.Geoids.map((value, index) => {
-															return <Option value={value}>{value}</Option>;
-														})}
-													</Select>
+														placeholder={row.Geoid}
+														disabled={false}
+														type={row.Geoids}
+													/>
 												</StyledTableCell>
 												<StyledTableCell>{row.Acq}</StyledTableCell>
 												<StyledTableCell>
-													<Select
+													<SelectIndicator
 														onChange={handleType}
-														placeholder={row.Type ? row.Type : 'Select'}
-														disabled={false}>
-														{row.Types.map((value, index) => {
-															return <Option value={value}>{value}</Option>;
-														})}
-													</Select>
+														placeholder={row.Type}
+														disabled={false}
+														type={row.Types}
+													/>
 												</StyledTableCell>
 												<StyledTableCell>
 													<Input
