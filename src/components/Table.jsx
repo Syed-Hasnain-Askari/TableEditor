@@ -50,18 +50,34 @@ export default function UserTable(props) {
 	const [acq, setAcq] = useState('');
 	const [type, setType] = useState('');
 	const [data, setData] = useState(props?.data?.Items);
-
+	const [geoIds, setGeoIds] = useState([
+		'GEOID18',
+		'GEOID12B',
+		'GEOID12A',
+		'GEOID12',
+		'GEOID09',
+		'GEOID03',
+		'GEOID06',
+		'GEOID99',
+		'GEOID96',
+	]);
+	const [types, setTypes] = useState([
+		'Aerial LIDAR',
+		'Aerial Photogrammetry',
+		'Terrestrial LIDAR',
+		'Terrestrial Photogrammetry',
+	]);
 	const onEdit = (index, id) => {
 		setEdit(index);
 	};
 	const updatedItem = {
-		Name: name,
-		EPSG: epsg,
-		Epoch: epoch,
-		Geoid: geoid,
-		Acq: acq,
-		Type: type,
-		Size: size,
+		name: name,
+		raw_epsg: epsg,
+		raw_epoch: epoch,
+		raw_geoid: geoid,
+		acquisition_date: acq,
+		raw_type: type,
+		raw_size: size,
 	};
 	const onSave = (id) => {
 		setEdit(-1);
@@ -87,9 +103,7 @@ export default function UserTable(props) {
 		setType(newValue);
 		console.log(type);
 	};
-	React.useEffect(() => {
-		console.log(type);
-	}, [type]);
+	React.useEffect(() => {}, [type]);
 	return (
 		<>
 			<BasicModal
@@ -131,7 +145,7 @@ export default function UserTable(props) {
 											<>
 												<StyledTableCell>
 													<Input
-														defaultValue={row.Name}
+														defaultValue={row.name}
 														id='name'
 														name='name'
 														onChange={(e) => setName(e.target.value)}
@@ -139,7 +153,7 @@ export default function UserTable(props) {
 												</StyledTableCell>
 												<StyledTableCell>
 													<Input
-														defaultValue={row.EPSG}
+														defaultValue={row.raw_epsg}
 														id='epsg'
 														name='epsg'
 														onChange={(e) => setEpsg(e.target.value)}
@@ -147,7 +161,7 @@ export default function UserTable(props) {
 												</StyledTableCell>
 												<StyledTableCell>
 													<Input
-														defaultValue={row.Epoch}
+														defaultValue={row.raw_epoch}
 														id='epoch'
 														name='epoch'
 														onChange={(e) => setEpoch(e.target.value)}
@@ -156,23 +170,30 @@ export default function UserTable(props) {
 												<StyledTableCell>
 													<SelectIndicator
 														onChange={handleGeoId}
-														placeholder={row.Geoid}
+														placeholder={row.raw_geoid}
 														disabled={false}
-														type={row.Geoids}
-													/>
-												</StyledTableCell>
-												<StyledTableCell>{row.Acq}</StyledTableCell>
-												<StyledTableCell>
-													<SelectIndicator
-														onChange={handleType}
-														placeholder={row.Type}
-														disabled={false}
-														type={row.Types}
+														type={geoIds}
 													/>
 												</StyledTableCell>
 												<StyledTableCell>
 													<Input
-														defaultValue={row.Size}
+														defaultValue={row.acquisition_date}
+														id='acq'
+														name='acq'
+														onChange={(e) => setAcq(e.target.value)}
+													/>
+												</StyledTableCell>
+												<StyledTableCell>
+													<SelectIndicator
+														onChange={handleType}
+														placeholder={row.raw_type}
+														disabled={false}
+														type={types}
+													/>
+												</StyledTableCell>
+												<StyledTableCell>
+													<Input
+														defaultValue={row.raw_size}
 														id='size'
 														name='size'
 														onChange={(e) => setSize(e.target.value)}
@@ -181,13 +202,13 @@ export default function UserTable(props) {
 											</>
 										) : (
 											<>
-												<StyledTableCell>{row.Name}</StyledTableCell>
-												<StyledTableCell>{row.EPSG}</StyledTableCell>
-												<StyledTableCell>{row.Epoch}</StyledTableCell>
-												<StyledTableCell>{row.Geoid}</StyledTableCell>
-												<StyledTableCell>{row.Acq}</StyledTableCell>
-												<StyledTableCell>{row.Type}</StyledTableCell>
-												<StyledTableCell>{row.Size}</StyledTableCell>
+												<StyledTableCell>{row.name}</StyledTableCell>
+												<StyledTableCell>{row.raw_epsg}</StyledTableCell>
+												<StyledTableCell>{row.raw_epoch}</StyledTableCell>
+												<StyledTableCell>{row.raw_geoid}</StyledTableCell>
+												<StyledTableCell>{row.acquisition_date}</StyledTableCell>
+												<StyledTableCell>{row.raw_type}</StyledTableCell>
+												<StyledTableCell>{row.raw_size}</StyledTableCell>
 											</>
 										)}
 										<StyledTableCell>
