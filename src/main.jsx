@@ -7,6 +7,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 // STARTS HERE
 import * as AWS from 'aws-sdk';
 AWS.config.update({
+	// region: 'eu-north-1',
 	region: 'eu-north-1',
 	secretAccessKey: import.meta.env.VITE_SECRETACCESSKEY,
 	accessKeyId: import.meta.env.VITE_ACCESSKEYID,

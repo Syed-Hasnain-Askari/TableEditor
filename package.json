@@ -20,6 +20,7 @@
     "antd": "^5.4.7",
     "aws-amplify": "^5.2.0",
     "aws-sdk": "^2.1373.0",
+    "dayjs": "^1.11.7",
     "react": "^18.2.0",
     "react-calendar": "^4.2.1",
     "react-dom": "^18.2.0",

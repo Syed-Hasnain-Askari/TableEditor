@@ -11,7 +11,6 @@ import Grid from '@mui/material/Grid';
 import { Link, useNavigate } from 'react-router-dom';
 import { notification } from 'antd';
 import { handleLogin } from '../src/config/UserPool';
-import { useAuth } from '../src/hooks/useAuth';
 function Copyright(props) {
 	return (
 		<Typography
@@ -27,7 +26,6 @@ function Copyright(props) {
 	);
 }
 export default function SignIn() {
-	const [response, setResponse] = useState('');
 	const navigate = useNavigate();
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -120,15 +118,6 @@ export default function SignIn() {
 						Sign In
 					</Button>
 					<Grid container>
-						<Grid
-							item
-							xs>
-							<Link
-								href='#'
-								variant='body2'>
-								Forgot password?
-							</Link>
-						</Grid>
 						<Grid item>
 							<Link to='/signup'>Don't have an account? Sign Up</Link>
 						</Grid>

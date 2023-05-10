@@ -1,6 +1,6 @@
 {
   "authSelections": "userPoolOnly",
-  "resourceName": "tableeditor",
+  "resourceName": "[***]ditor",
   "serviceType": "imported",
   "region": "eu-north-1",
   "usernameAttributes": [

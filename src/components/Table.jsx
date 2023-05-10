@@ -3,14 +3,12 @@ import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import Checkbox from '@mui/material/Checkbox';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Input from '@mui/material/Input';
-import Select from '@mui/joy/Select';
-import Option from '@mui/joy/Option';
+import { DatePicker, Space } from 'antd';
 import CancelIcon from '@mui/icons-material/Cancel';
 import SelectIndicator from './SelectIndicator';
 import EditIcon from '@mui/icons-material/Edit';
@@ -20,6 +18,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import BasicModal from '../components/Modal';
 import ComingSoonModal from '../components/ComingSoonModal';
 import DoneIcon from '@mui/icons-material/Done';
+import dayjs from 'dayjs';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
@@ -49,19 +48,35 @@ export default function UserTable(props) {
 	const [size, setSize] = useState('');
 	const [acq, setAcq] = useState('');
 	const [type, setType] = useState('');
+	const dateFormat = 'YYYY/MM/DD';
 	const [data, setData] = useState(props?.data?.Items);
-
+	const [geoIds, setGeoIds] = useState([
+		'GEOID18',
+		'GEOID12B',
+		'GEOID12A',
+		'GEOID12',
+		'GEOID09',
+		'GEOID03',
+		'GEOID06',
+		'GEOID99',
+		'GEOID96',
+	]);
+	const [types, setTypes] = useState([
+		'Aerial LIDAR',
+		'Aerial Photogrammetry',
+		'Terrestrial LIDAR',
+		'Terrestrial Photogrammetry',
+	]);
 	const onEdit = (index, id) => {
 		setEdit(index);
 	};
 	const updatedItem = {
-		Name: name,
-		EPSG: epsg,
-		Epoch: epoch,
-		Geoid: geoid,
-		Acq: acq,
-		Type: type,
-		Size: size,
+		name: name,
+		raw_epsg: epsg,
+		raw_epoch: epoch,
+		raw_geoid: geoid,
+		acquisition_date: acq,
+		acquisition_type: type,
 	};
 	const onSave = (id) => {
 		setEdit(-1);
@@ -85,11 +100,11 @@ export default function UserTable(props) {
 	};
 	const handleType = (event, newValue) => {
 		setType(newValue);
-		console.log(type);
 	};
-	React.useEffect(() => {
-		console.log(type);
-	}, [type]);
+	const onChange = (date, dateString) => {
+		setAcq(dateString);
+	};
+	React.useEffect(() => {}, [type]);
 	return (
 		<>
 			<BasicModal
@@ -131,7 +146,7 @@ export default function UserTable(props) {
 											<>
 												<StyledTableCell>
 													<Input
-														defaultValue={row.Name}
+														defaultValue={row.name}
 														id='name'
 														name='name'
 														onChange={(e) => setName(e.target.value)}
@@ -139,7 +154,7 @@ export default function UserTable(props) {
 												</StyledTableCell>
 												<StyledTableCell>
 													<Input
-														defaultValue={row.EPSG}
+														defaultValue={row.raw_epsg}
 														id='epsg'
 														name='epsg'
 														onChange={(e) => setEpsg(e.target.value)}
@@ -147,51 +162,48 @@ export default function UserTable(props) {
 												</StyledTableCell>
 												<StyledTableCell>
 													<Input
-														defaultValue={row.Epoch}
+														defaultValue={row.raw_epoch}
 														id='epoch'
 														name='epoch'
 														onChange={(e) => setEpoch(e.target.value)}
 													/>
 												</StyledTableCell>
 												<StyledTableCell>
-													<Select
+													<SelectIndicator
 														onChange={handleGeoId}
-														placeholder={row.Geoid ? row.Geoid : 'Select'}
-														disabled={false}>
-														{row.Geoids.map((value, index) => {
-															return <Option value={value}>{value}</Option>;
-														})}
-													</Select>
-												</StyledTableCell>
-												<StyledTableCell>{row.Acq}</StyledTableCell>
-												<StyledTableCell>
-													<Select
-														onChange={handleType}
-														placeholder={row.Type ? row.Type : 'Select'}
-														disabled={false}>
-														{row.Types.map((value, index) => {
-															return <Option value={value}>{value}</Option>;
-														})}
-													</Select>
-												</StyledTableCell>
-												<StyledTableCell>
-													<Input
-														defaultValue={row.Size}
-														id='size'
-														name='size'
-														onChange={(e) => setSize(e.target.value)}
+														placeholder={row.raw_geoid}
+														disabled={false}
+														type={geoIds}
 													/>
 												</StyledTableCell>
+												<StyledTableCell>
+													<Space direction='vertical'>
+														<DatePicker
+															onChange={onChange}
+															defaultValue={dayjs(row.acquisition_date, dateFormat)}
+															format={dateFormat}
+														/>
+													</Space>
+												</StyledTableCell>
+												<StyledTableCell>
+													<SelectIndicator
+														onChange={handleType}
+														placeholder={row.acquisition_type}
+														disabled={false}
+														type={types}
+													/>
+												</StyledTableCell>
+												<StyledTableCell>{row.raw_size}</StyledTableCell>
 											</>
 										) : (
 											<>
-												<StyledTableCell>{row.Name}</StyledTableCell>
-												<StyledTableCell>{row.EPSG}</StyledTableCell>
-												<StyledTableCell>{row.Epoch}</StyledTableCell>
-												<StyledTableCell>{row.Geoid}</StyledTableCell>
-												<StyledTableCell>{row.Acq}</StyledTableCell>
-												<StyledTableCell>{row.Type}</StyledTableCell>
-												<StyledTableCell>{row.Size}</StyledTableCell>
+												<StyledTableCell>{row.name}</StyledTableCell>
+												<StyledTableCell>{row.raw_epsg}</StyledTableCell>
+												<StyledTableCell>{row.raw_epoch}</StyledTableCell>
+												<StyledTableCell>{row.raw_geoid}</StyledTableCell>
+												<StyledTableCell>{row.acquisition_date}</StyledTableCell>
+												<StyledTableCell>{row.acquisition_type}</StyledTableCell>
+												<StyledTableCell>{row.raw_size}</StyledTableCell>
 											</>
 										)}
 										<StyledTableCell>

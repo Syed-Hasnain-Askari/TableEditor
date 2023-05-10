@@ -1,5 +1,6 @@
 import { Amplify, Auth } from 'aws-amplify';
 import awsconfig from '../aws-exports';
+import { notification } from 'antd';
 Amplify.configure(awsconfig);
 export const handleSignOut = async () => {
 	try {
@@ -14,7 +15,12 @@ export const handleLogin = async (email, password) => {
 		const res = await Auth.signIn(email, password);
 		return res;
 	} catch (error) {
-		console.log(error);
+		return notification.error({
+			message: 'Error',
+			description: `${error}`,
+			placement: 'topRight',
+			duration: 2,
+		});
 	}
 };
 export const handleSignUp = async (email, password) => {
@@ -22,7 +28,12 @@ export const handleSignUp = async (email, password) => {
 		const res = await Auth.signUp(email, password);
 		return res.user;
 	} catch (error) {
-		console.log(error);
+		return notification.error({
+			message: 'Error',
+			description: `${error}`,
+			placement: 'topRight',
+			duration: 2,
+		});
 	}
 };
 export const handleConfirmationEmail = async (email, code) => {
@@ -30,6 +41,11 @@ export const handleConfirmationEmail = async (email, code) => {
 		const res = await Auth.confirmSignUp(email, code);
 		return res;
 	} catch (error) {
-		console.log(error);
+		return notification.error({
+			message: 'Error',
+			description: `${error}`,
+			placement: 'topRight',
+			duration: 2,
+		});
 	}
 };

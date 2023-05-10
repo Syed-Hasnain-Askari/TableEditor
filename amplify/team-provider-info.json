@@ -10,6 +10,11 @@
       "StackName": "amplify-tableeditor-staging-223351",
       "StackId": "arn:aws:cloudformation:eu-north-1:641942817095:stack/amplify-tableeditor-staging-223351/13bba920-ec5e-11ed-9eb6-0af8f8f13988",
       "AmplifyAppId": "d32tf2omaty2h"
+    },
+    "categories": {
+      "auth": {
+        "tableeditor": {}
+      }
     }
   }
 }
