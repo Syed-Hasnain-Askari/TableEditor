@@ -10,7 +10,13 @@ export default function SelectIndicator(props) {
 			placeholder={props.placeholder ? props.placeholder : 'Select'}
 			onChange={props.onChange}>
 			{props?.type?.map((val, index) => {
-				return <Option value={val}>{val}</Option>;
+				return (
+					<Option
+						key={index}
+						value={val}>
+						{val}
+					</Option>
+				);
 			})}
 		</Select>
 	);

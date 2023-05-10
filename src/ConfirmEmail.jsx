@@ -37,7 +37,6 @@ export default function ConfirmEmail() {
 			event.preventDefault();
 			const data = new FormData(event.currentTarget);
 			const code = data.get('code');
-			console.log(code, 'this is code');
 			setLoading(true);
 			handleConfirmationEmail(location.state.email, code).then(() => {
 				notification

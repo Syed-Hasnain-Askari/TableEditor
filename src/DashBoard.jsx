@@ -39,8 +39,7 @@ export default function DashBoard() {
 			if (updatedItem.raw_epoch) updatedAttributes.raw_epoch = updatedItem.raw_epoch;
 			if (updatedItem.raw_geoid) updatedAttributes.raw_geoid = updatedItem.raw_geoid;
 			if (updatedItem.acquisition_date) updatedAttributes.acquisition_date = updatedItem.acquisition_date;
-			if (updatedItem.raw_type) updatedAttributes.raw_type = updatedItem.raw_type;
-			if (updatedItem.raw_size) updatedAttributes.raw_size = updatedItem.raw_size;
+			if (updatedItem.acquisition_type) updatedAttributes.acquisition_type = updatedItem.acquisition_type;
 
 			// Update the item in the database
 			const params = {
@@ -58,10 +57,6 @@ export default function DashBoard() {
 				ReturnValues: 'ALL_NEW',
 			};
 			const { Attributes } = await docClient.update(params).promise();
-
-			console.log(`Successfully updated item with id ${id}`);
-			console.log(Attributes);
-
 			// Reload the data and update the table
 			await onRead();
 			setLoading(false);

@@ -23,9 +23,7 @@ const style = {
 export default function ComingSoonModal(props) {
 	const handleClose = () => {
 		props.handleCloseComingSoon();
-		console.log(props);
 	};
-	console.log(props);
 	return (
 		<div>
 			<Modal

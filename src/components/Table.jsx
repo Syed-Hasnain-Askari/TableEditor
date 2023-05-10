@@ -3,14 +3,12 @@ import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import Checkbox from '@mui/material/Checkbox';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Input from '@mui/material/Input';
-import Select from '@mui/joy/Select';
-import Option from '@mui/joy/Option';
+import { DatePicker, Space } from 'antd';
 import CancelIcon from '@mui/icons-material/Cancel';
 import SelectIndicator from './SelectIndicator';
 import EditIcon from '@mui/icons-material/Edit';
@@ -20,6 +18,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import BasicModal from '../components/Modal';
 import ComingSoonModal from '../components/ComingSoonModal';
 import DoneIcon from '@mui/icons-material/Done';
+import dayjs from 'dayjs';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
@@ -49,6 +48,7 @@ export default function UserTable(props) {
 	const [size, setSize] = useState('');
 	const [acq, setAcq] = useState('');
 	const [type, setType] = useState('');
+	const dateFormat = 'YYYY/MM/DD';
 	const [data, setData] = useState(props?.data?.Items);
 	const [geoIds, setGeoIds] = useState([
 		'GEOID18',
@@ -76,8 +76,7 @@ export default function UserTable(props) {
 		raw_epoch: epoch,
 		raw_geoid: geoid,
 		acquisition_date: acq,
-		raw_type: type,
-		raw_size: size,
+		acquisition_type: type,
 	};
 	const onSave = (id) => {
 		setEdit(-1);
@@ -101,7 +100,9 @@ export default function UserTable(props) {
 	};
 	const handleType = (event, newValue) => {
 		setType(newValue);
-		console.log(type);
+	};
+	const onChange = (date, dateString) => {
+		setAcq(dateString);
 	};
 	React.useEffect(() => {}, [type]);
 	return (
@@ -176,29 +177,23 @@ export default function UserTable(props) {
 													/>
 												</StyledTableCell>
 												<StyledTableCell>
-													<Input
-														defaultValue={row.acquisition_date}
-														id='acq'
-														name='acq'
-														onChange={(e) => setAcq(e.target.value)}
-													/>
+													<Space direction='vertical'>
+														<DatePicker
+															onChange={onChange}
+															defaultValue={dayjs(row.acquisition_date, dateFormat)}
+															format={dateFormat}
+														/>
+													</Space>
 												</StyledTableCell>
 												<StyledTableCell>
 													<SelectIndicator
 														onChange={handleType}
-														placeholder={row.raw_type}
+														placeholder={row.acquisition_type}
 														disabled={false}
 														type={types}
 													/>
 												</StyledTableCell>
-												<StyledTableCell>
-													<Input
-														defaultValue={row.raw_size}
-														id='size'
-														name='size'
-														onChange={(e) => setSize(e.target.value)}
-													/>
-												</StyledTableCell>
+												<StyledTableCell>{row.raw_size}</StyledTableCell>
 											</>
 										) : (
 											<>
@@ -207,7 +202,7 @@ export default function UserTable(props) {
 												<StyledTableCell>{row.raw_epoch}</StyledTableCell>
 												<StyledTableCell>{row.raw_geoid}</StyledTableCell>
 												<StyledTableCell>{row.acquisition_date}</StyledTableCell>
-												<StyledTableCell>{row.raw_type}</StyledTableCell>
+												<StyledTableCell>{row.acquisition_type}</StyledTableCell>
 												<StyledTableCell>{row.raw_size}</StyledTableCell>
 											</>
 										)}
